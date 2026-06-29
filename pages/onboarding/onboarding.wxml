@@ -1,0 +1,143 @@
+<view class="page safe-bottom onboarding-page">
+  <view class="app-header detail-header">
+    <button class="back-btn" bindtap="goBack">‹</button>
+    <view>
+      <view class="header-title">{{stepTitles[step]}}</view>
+    </view>
+  </view>
+
+  <view class="progress-wrap">
+    <view class="progress-top">
+      <text>{{stepDisplay}} / {{totalSteps}}</text>
+      <text>{{stepTitles[step]}}</text>
+    </view>
+    <progress percent="{{progressPercent}}" stroke-width="6" activeColor="#111111" backgroundColor="#e6e6e6" border-radius="6" />
+  </view>
+
+  <view wx:if="{{step === 0}}" class="step-panel">
+    <view class="form-card">
+      <view class="title-lg">基础信息</view>
+      <view class="form-row">
+        <text>性别</text>
+        <view class="segmented small">
+          <view wx:for="{{genderOptions}}" wx:key="value" class="{{form.gender === item.value ? 'active' : ''}}" data-field="gender" data-value="{{item.value}}" bindtap="selectOption">{{item.label}}</view>
+        </view>
+      </view>
+      <view class="form-row"><text>年龄</text><input class="plain-input" type="number" value="{{form.age}}" data-field="age" bindinput="onInput" placeholder="请输入" /></view>
+      <view class="form-row"><text>身高（cm）</text><input class="plain-input" type="digit" value="{{form.height}}" data-field="height" bindinput="onInput" placeholder="请输入" /></view>
+      <view class="form-row"><text>体重（kg）</text><input class="plain-input" type="digit" value="{{form.weight}}" data-field="weight" bindinput="onInput" placeholder="请输入" /></view>
+      <view class="form-row"><text>目标体重（kg）</text><input class="plain-input" type="digit" value="{{form.targetWeight}}" data-field="targetWeight" bindinput="onInput" placeholder="请输入" /></view>
+    </view>
+    <view class="form-card section">
+      <view class="title-lg">伤病或特殊情况</view>
+      <view class="option-grid">
+        <view wx:for="{{injuryOptions}}" wx:key="value" class="option {{injuryMap[item.value] ? 'active' : ''}}" data-value="{{item.value}}" bindtap="toggleInjury">{{item.label}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{step === 1}}" class="step-panel">
+    <view class="question-title">你的健身目标是什么？</view>
+    <view class="option-list">
+      <view wx:for="{{goalOptions}}" wx:key="value" class="choice-card {{form.goal === item.value ? 'active' : ''}}" data-field="goal" data-value="{{item.value}}" bindtap="selectOption">
+        <view>
+          <view class="choice-title">{{item.label}}</view>
+          <text>{{item.desc}}</text>
+        </view>
+        <view class="choice-dot"></view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{step === 2}}" class="step-panel">
+    <view class="question-title">你在哪里训练？</view>
+    <view class="option-grid three">
+      <view wx:for="{{locationOptions}}" wx:key="value" class="option {{form.location === item.value ? 'active' : ''}}" data-field="location" data-value="{{item.value}}" bindtap="selectOption">{{item.label}}</view>
+    </view>
+    <view class="question-title section">你具备哪些训练条件？</view>
+    <view class="option-grid">
+      <view wx:for="{{equipmentOptions}}" wx:key="label" class="option {{form.equipment === item.value ? 'active' : ''}}" data-field="equipment" data-value="{{item.value}}" bindtap="selectOption">{{item.label}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{step === 3}}" class="step-panel">
+    <view class="question-title">你每周能训练几天？</view>
+    <view class="option-grid">
+      <view wx:for="{{weeklyOptions}}" wx:key="*this" class="option {{form.weeklyDays === item ? 'active' : ''}}" data-field="weeklyDays" data-value="{{item}}" bindtap="selectOption">每周 {{item}} 天</view>
+    </view>
+    <view class="question-title section">每次大约训练多久？</view>
+    <view class="option-grid">
+      <view wx:for="{{minuteOptions}}" wx:key="*this" class="option {{form.sessionMinutes === item ? 'active' : ''}}" data-field="sessionMinutes" data-value="{{item}}" bindtap="selectOption">{{item}} 分钟</view>
+    </view>
+  </view>
+
+  <view wx:if="{{step === 4}}" class="step-panel">
+    <view class="question-title">你更喜欢哪种训练方式？</view>
+    <view class="option-list">
+      <view wx:for="{{preferenceOptions}}" wx:key="value" class="choice-card {{form.planStyle === item.value ? 'active' : ''}}" data-field="planStyle" data-value="{{item.value}}" bindtap="selectOption">
+        <view>
+          <view class="choice-title">{{item.label}}</view>
+          <text>{{item.desc}}</text>
+        </view>
+        <view class="choice-dot"></view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{step === 5}}" class="step-panel">
+    <view class="question-title">你的饮食习惯是怎样的？</view>
+    <view class="form-card">
+      <view class="field-title">饮食模式</view>
+      <view class="option-grid">
+        <view wx:for="{{dietPatternOptions}}" wx:key="value" class="option {{form.dietPattern === item.value ? 'active' : ''}}" data-field="dietPattern" data-value="{{item.value}}" bindtap="selectOption">{{item.label}}</view>
+      </view>
+      <view class="field-title">吃早餐吗</view>
+      <view class="option-grid three">
+        <view wx:for="{{breakfastOptions}}" wx:key="value" class="option {{form.breakfastHabit === item.value ? 'active' : ''}}" data-field="breakfastHabit" data-value="{{item.value}}" bindtap="selectOption">{{item.label}}</view>
+      </view>
+      <view class="field-title">平时怎么吃</view>
+      <view class="option-grid">
+        <view wx:for="{{dietModeOptions}}" wx:key="value" class="option {{form.dietMode === item.value ? 'active' : ''}}" data-field="dietMode" data-value="{{item.value}}" bindtap="selectOption">{{item.label}}</view>
+      </view>
+      <view class="field-title">忌口食物</view>
+      <view class="option-grid">
+        <view wx:for="{{avoidOptions}}" wx:key="*this" class="option {{avoidMap[item] ? 'active' : ''}}" data-value="{{item}}" bindtap="toggleAvoid">{{item}}</view>
+      </view>
+      <input class="custom-avoid" value="{{form.avoidFoods}}" data-field="avoidFoods" bindinput="onInput" placeholder="自定义忌口，可直接输入" />
+    </view>
+  </view>
+
+  <view wx:if="{{step === 6}}" class="step-panel">
+    <view class="question-title">为你推荐的计划</view>
+    <view wx:if="{{recommendation}}" class="recommend-card">
+      <view class="tag">推荐方案</view>
+      <view class="recommend-name">{{recommendation.name}}</view>
+      <view class="recommend-line">目标：{{recommendationGoalLabel}}</view>
+      <view class="recommend-line">训练频率：每周 {{recommendation.weeklyDays}} 天 · 每次 {{recommendation.sessionMinutes}} 分钟</view>
+      <view class="recommend-line">饮食目标：每日 {{recommendation.targetCalories}} kcal</view>
+      <button class="primary-btn section" bindtap="submit">使用推荐方案</button>
+      <button class="secondary-btn section" bindtap="viewOtherPlans">查看其他方案</button>
+    </view>
+
+    <view wx:if="{{showOtherPlans}}" class="other-list section">
+      <view wx:for="{{otherPlans}}" wx:key="id" class="choice-card" data-style="{{item.planStyle}}" bindtap="choosePlan">
+        <view>
+          <view class="choice-title">{{item.name}}</view>
+        </view>
+        <view class="chevron">›</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="danger section" wx:if="{{risks.length && step === 0}}">
+    <view wx:for="{{risks}}" wx:key="*this">{{item}}</view>
+  </view>
+
+  <view class="nav-actions" wx:if="{{step < 6}}">
+    <button class="ghost-btn" wx:if="{{step > 0}}" bindtap="prev">上一步</button>
+    <button class="primary-btn" bindtap="next">下一步</button>
+  </view>
+  <view class="nav-actions" wx:else>
+    <button class="ghost-btn" bindtap="prev">上一步</button>
+  </view>
+</view>
