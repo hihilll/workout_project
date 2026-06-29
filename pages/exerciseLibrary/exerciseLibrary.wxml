@@ -1,0 +1,71 @@
+<view class="page safe-bottom exercise-library-page">
+  <view class="app-header detail-header">
+    <button class="back-btn" bindtap="goBack">‹</button>
+    <view>
+      <view class="header-title">{{titleText}}</view>
+      <view class="header-subtitle">{{subtitleText}}</view>
+    </view>
+  </view>
+
+  <view class="search-box">
+    <text>搜</text>
+    <input value="{{query}}" bindinput="onSearch" placeholder="搜索动作名称、肌群或器械" />
+    <button class="favorite-filter {{favoriteOnly ? 'active' : ''}}" bindtap="toggleFavoriteOnly">☆</button>
+  </view>
+
+  <view class="library-layout">
+    <scroll-view scroll-y class="category-sidebar">
+      <view
+        wx:for="{{categoryFilters}}"
+        wx:key="value"
+        class="category-item {{categoryFilter === item.value ? 'active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="setCategory"
+      >{{item.label}}</view>
+    </scroll-view>
+
+    <view class="library-content">
+      <scroll-view scroll-x class="equipment-scroll" show-scrollbar="{{false}}">
+        <view class="equipment-row">
+          <view
+            wx:for="{{equipmentFilters}}"
+            wx:key="value"
+            class="equipment-chip {{equipmentFilter === item.value ? 'active' : ''}}"
+            data-value="{{item.value}}"
+            bindtap="setEquipment"
+          >{{item.label}}</view>
+        </view>
+      </scroll-view>
+
+      <view class="result-meta">共 {{resultCount}} 个动作</view>
+
+      <scroll-view scroll-y class="exercise-list">
+        <view wx:if="{{!library.length}}" class="empty-library">
+          <view class="title-lg">没有找到动作</view>
+          <view class="muted">换个关键词或筛选条件试试。</view>
+        </view>
+        <view
+          wx:for="{{library}}"
+          wx:key="id"
+          class="exercise-card {{item.joined ? 'joined' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="selectExercise"
+        >
+          <view class="exercise-card-head">
+            <view class="exercise-icon">{{item.typeLabel}}</view>
+            <view class="exercise-main">
+              <view class="exercise-name">{{item.name}}</view>
+              <view class="exercise-meta">{{item.muscleText}}</view>
+            </view>
+            <button class="favorite-btn {{item.favorite ? 'active' : ''}}" data-id="{{item.id}}" catchtap="toggleFavorite">{{item.favorite ? '★' : '☆'}}</button>
+          </view>
+          <view class="exercise-desc">{{item.desc}}</view>
+          <view class="exercise-footer">
+            <text>{{item.equipmentText}}</text>
+            <view class="match-tag {{item.match ? 'good' : ''}}">{{item.joined ? '已加入' : item.matchText}}</view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
