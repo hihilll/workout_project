@@ -1,0 +1,512 @@
+<view class="page safe-bottom plan-page {{mode === 'builder' ? 'builder-mode' : 'overview-mode'}}">
+  <!-- 概览模式 -->
+  <block wx:if="{{mode === 'overview'}}">
+    <!-- 头部 -->
+    <view class="plan-header">
+      <view class="header-top">
+        <view>
+          <view class="header-title">训练</view>
+          <view class="header-sub">{{currentPlanText}}</view>
+        </view>
+        <button class="header-action" bindtap="editFlow">
+          <text class="action-icon">⚙</text>
+        </button>
+      </view>
+    </view>
+
+    <!-- 今日训练卡片 -->
+    <view class="today-card" bindtap="startTodayWorkout">
+      <view class="today-bg">
+        <view class="today-circle c1"></view>
+        <view class="today-circle c2"></view>
+      </view>
+      <view class="today-content">
+        <view class="today-badge">{{todayWorkout.isRestDay ? '休息日' : '今日训练'}}</view>
+        <view class="today-title">{{todayWorkout.title}}</view>
+        <view class="today-meta" wx:if="{{!todayWorkout.isRestDay}}">
+          <text>{{todayWorkout.exercises.length}} 个动作</text>
+          <text class="meta-dot">·</text>
+          <text>约 {{plan.sessionMinutes}} 分钟</text>
+        </view>
+        <view class="today-action">
+          <text>{{todayWorkout.isRestDay ? '记录状态' : '开始训练'}}</text>
+          <text class="today-arrow">→</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 周进度 -->
+    <view class="week-progress">
+      <view class="week-header">
+        <text class="week-title">本周进度</text>
+        <text class="week-count">{{weekWorkoutDone}}/{{trainingDays}}</text>
+      </view>
+      <view class="week-bar">
+        <view class="week-bar-fill" style="width: {{weekProgress}}%"></view>
+      </view>
+      <view class="week-days">
+        <view wx:for="{{weekPreviewDays}}" wx:key="id" 
+              class="day-item {{item.isRestDay ? 'rest' : ''}} {{index === todayIndex ? 'today' : ''}} {{index < todayIndex ? 'past' : ''}}">
+          <text class="day-label">{{item.dayName}}</text>
+          <view class="day-dot {{item.isRestDay ? '' : 'active'}}">
+            <text wx:if="{{item.isRestDay}}">休</text>
+            <text wx:else>{{item.iconText}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 训练统计 -->
+    <view class="stats-row">
+      <view class="stat-card">
+        <text class="stat-value">{{trainingDays}}</text>
+        <text class="stat-label">训练日</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-value">{{exerciseCount}}</text>
+        <text class="stat-label">动作数</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-value">{{plan.sessionMinutes}}分</text>
+        <text class="stat-label">单次时长</text>
+      </view>
+    </view>
+
+    <!-- 快捷入口 -->
+    <view class="shortcuts">
+      <button class="shortcut-btn" hover-class="pressed" bindtap="openWeekPlan">
+        <view class="shortcut-icon">
+          <text>周</text>
+        </view>
+        <text class="shortcut-text">周计划</text>
+      </button>
+      <button class="shortcut-btn" hover-class="pressed" bindtap="openExerciseLibrary">
+        <view class="shortcut-icon">
+          <text>库</text>
+        </view>
+        <text class="shortcut-text">动作库</text>
+      </button>
+      <button class="shortcut-btn" hover-class="pressed" bindtap="addTrainingDay">
+        <view class="shortcut-icon">
+          <text>＋</text>
+        </view>
+        <text class="shortcut-text">加训练</text>
+      </button>
+      <button class="shortcut-btn" hover-class="pressed" bindtap="editFlow">
+        <view class="shortcut-icon">
+          <text>改</text>
+        </view>
+        <text class="shortcut-text">重新生成</text>
+      </button>
+    </view>
+
+    <!-- 肌群训练量 - 人体肌肉图 -->
+    <view class="muscle-map-section">
+      <view class="section-header">
+        <text class="section-title">本周训练部位</text>
+        <text class="section-sub">高亮显示本周训练肌群</text>
+      </view>
+      <view class="muscle-map-card">
+        <view class="muscle-map-content">
+          <!-- 左侧：人体肌肉图 -->
+          <view class="body-map-wrapper">
+            <view class="body-map">
+              <!-- 身体轮廓 -->
+              <view class="body-outline">
+                <!-- 头部 -->
+                <view class="body-part head"></view>
+                
+                <!-- 颈部 -->
+                <view class="body-part neck"></view>
+                
+                <!-- 肩部 -->
+                <view class="body-part shoulder left {{muscleHighlight.shoulders > 0 ? 'active' : ''}}"></view>
+                <view class="body-part shoulder right {{muscleHighlight.shoulders > 0 ? 'active' : ''}}"></view>
+                
+                <!-- 胸部 -->
+                <view class="body-part chest left {{muscleHighlight.chest > 0 ? 'active' : ''}}"></view>
+                <view class="body-part chest right {{muscleHighlight.chest > 0 ? 'active' : ''}}"></view>
+                
+                <!-- 手臂 -->
+                <view class="body-part arm left {{muscleHighlight.biceps > 0 ? 'active' : ''}}"></view>
+                <view class="body-part arm right {{muscleHighlight.biceps > 0 ? 'active' : ''}}"></view>
+                
+                <!-- 核心 -->
+                <view class="body-part core {{muscleHighlight.core > 0 ? 'active' : ''}}"></view>
+                
+                <!-- 臀部 -->
+                <view class="body-part hip left {{muscleHighlight.glutes > 0 ? 'active' : ''}}"></view>
+                <view class="body-part hip right {{muscleHighlight.glutes > 0 ? 'active' : ''}}"></view>
+                
+                <!-- 腿部 -->
+                <view class="body-part leg left {{muscleHighlight.legs > 0 ? 'active' : ''}}"></view>
+                <view class="body-part leg right {{muscleHighlight.legs > 0 ? 'active' : ''}}"></view>
+                
+                <!-- 小腿 -->
+                <view class="body-part calf left {{muscleHighlight.legs > 0 ? 'active' : ''}}"></view>
+                <view class="body-part calf right {{muscleHighlight.legs > 0 ? 'active' : ''}}"></view>
+              </view>
+            </view>
+            
+            <!-- 图例 -->
+            <view class="map-legend">
+              <view class="legend-item">
+                <view class="legend-color active"></view>
+                <text class="legend-text">本周训练</text>
+              </view>
+              <view class="legend-item">
+                <view class="legend-color"></view>
+                <text class="legend-text">未训练</text>
+              </view>
+            </view>
+          </view>
+          
+          <!-- 右侧：训练组数列表 -->
+          <view class="muscle-stats">
+            <view class="stats-title">训练组数</view>
+            <view class="muscle-stat-item" wx:for="{{muscleVolume.list}}" wx:key="key">
+              <view class="muscle-dot {{item.sets > 0 ? 'active' : ''}}"></view>
+              <text class="muscle-name">{{item.name}}</text>
+              <text class="muscle-sets">{{item.sets}}组</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 本周计划详情 -->
+    <view class="plan-detail-section" wx:if="{{weekPreviewDays.length}}">
+      <view class="section-header">
+        <text class="section-title">本周计划</text>
+        <view class="section-action" bindtap="openWeekPlan">
+          <text>查看详情</text>
+          <text class="action-arrow">›</text>
+        </view>
+      </view>
+      <view class="plan-day-list">
+        <view class="plan-day-item {{item.isRestDay ? 'rest' : ''}} {{index === todayIndex ? 'today' : ''}}" 
+              wx:for="{{weekPreviewDays}}" wx:key="id"
+              data-day="{{index}}" bindtap="openWorkout">
+          <view class="plan-day-left">
+            <text class="plan-day-name">{{item.dayName}}</text>
+            <text class="plan-day-title">{{item.isRestDay ? '休息日' : item.title}}</text>
+          </view>
+          <view class="plan-day-right">
+            <text class="plan-day-meta" wx:if="{{!item.isRestDay}}">{{item.exercises.length}}个动作</text>
+            <text class="plan-day-arrow">›</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 最近训练记录 -->
+    <view class="recent-section" wx:if="{{recentLogs.length}}">
+      <view class="section-header">
+        <text class="section-title">最近训练</text>
+        <view class="section-action" bindtap="goStats">
+          <text>全部记录</text>
+          <text class="action-arrow">›</text>
+        </view>
+      </view>
+      <view class="recent-list">
+        <view class="recent-item" wx:for="{{recentLogs}}" wx:key="id">
+          <view class="recent-left">
+            <view class="recent-icon">练</view>
+            <view class="recent-info">
+              <text class="recent-title">{{item.dayTitle}}</text>
+              <text class="recent-date">{{item.date}} · {{item.durationText}}</text>
+            </view>
+          </view>
+          <view class="recent-right">
+            <view class="recent-badge {{item.rateClass}}">
+              <text>{{item.completionRate}}%</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 警告提示 -->
+    <view class="warning-list" wx:if="{{plan.warnings.length}}">
+      <view class="warning-item" wx:for="{{plan.warnings}}" wx:key="*this">
+        <view class="warning-icon">!</view>
+        <text>{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!plan}}">
+      <view class="empty-visual">
+        <view class="empty-circle"></view>
+        <view class="empty-line"></view>
+        <view class="empty-dot"></view>
+      </view>
+      <view class="empty-title">还没有训练计划</view>
+      <view class="empty-desc">填写基本信息，系统为你量身定制</view>
+      <button class="empty-btn" bindtap="editFlow">开始制定</button>
+    </view>
+  </block>
+
+  <!-- 分步引导模式 -->
+  <block wx:if="{{mode === 'builder'}}">
+    <!-- 引导头部 -->
+    <view class="builder-header">
+      <button class="back-btn" wx:if="{{step > 0}}" bindtap="prev">‹</button>
+      <view class="builder-progress">
+        <view class="progress-steps">
+          <view wx:for="{{progressSegments}}" wx:key="id" 
+                class="progress-step {{item.active ? 'done' : ''}} {{item.current ? 'current' : ''}}">
+            <view class="step-dot"></view>
+            <view class="step-line" wx:if="{{index < totalSteps - 1}}"></view>
+          </view>
+        </view>
+        <view class="progress-text">{{stepDisplay}}/{{totalSteps}}</view>
+      </view>
+    </view>
+
+    <!-- 步骤标题 -->
+    <view class="step-title">{{stepHeadings[step]}}</view>
+
+    <!-- 步骤0：基础信息 -->
+    <view wx:if="{{step === 0}}" class="step-content">
+      <view class="form-card">
+        <view class="form-row">
+          <text class="form-label">性别</text>
+          <view class="form-options">
+            <view wx:for="{{genderOptions}}" wx:key="value" 
+                  class="option-tag {{form.gender === item.value ? 'active' : ''}}" 
+                  data-field="gender" data-value="{{item.value}}" bindtap="selectOption">
+              {{item.label}}
+            </view>
+          </view>
+        </view>
+        <view class="form-divider"></view>
+        <view class="form-row">
+          <text class="form-label">年龄</text>
+          <input class="form-input" type="number" value="{{form.age}}" data-field="age" bindinput="onInput" placeholder="25" />
+        </view>
+        <view class="form-divider"></view>
+        <view class="form-row">
+          <text class="form-label">身高</text>
+          <input class="form-input" type="digit" value="{{form.height}}" data-field="height" bindinput="onInput" placeholder="175" />
+          <text class="form-unit">cm</text>
+        </view>
+        <view class="form-divider"></view>
+        <view class="form-row">
+          <text class="form-label">体重</text>
+          <input class="form-input" type="digit" value="{{form.weight}}" data-field="weight" bindinput="onInput" placeholder="65" />
+          <text class="form-unit">kg</text>
+        </view>
+        <view class="form-divider"></view>
+        <view class="form-row">
+          <text class="form-label">目标体重</text>
+          <input class="form-input" type="digit" value="{{form.targetWeight}}" data-field="targetWeight" bindinput="onInput" placeholder="60" />
+          <text class="form-unit">kg</text>
+        </view>
+      </view>
+
+      <view class="injury-section" wx:if="{{injuryOptions.length}}">
+        <view class="section-label">伤病限制（可选）</view>
+        <view class="injury-tags">
+          <view wx:for="{{injuryOptions}}" wx:key="value" 
+                class="injury-tag {{injuryMap[item.value] ? 'active' : ''}}" 
+                data-value="{{item.value}}" bindtap="toggleInjury">
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="risk-card" wx:if="{{risks.length}}">
+        <view class="risk-icon">!</view>
+        <view class="risk-list">
+          <view wx:for="{{risks}}" wx:key="*this">{{item}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 步骤1：健身目标 -->
+    <view wx:if="{{step === 1}}" class="step-content">
+      <view class="goal-list">
+        <view wx:for="{{goalOptions}}" wx:key="value" 
+              class="goal-card {{form.goal === item.value ? 'active' : ''}}" 
+              data-field="goal" data-value="{{item.value}}" bindtap="selectOption">
+          <view class="goal-icon">{{item.icon}}</view>
+          <view class="goal-info">
+            <view class="goal-name">{{item.label}}</view>
+            <view class="goal-desc">{{item.desc}}</view>
+          </view>
+          <view class="goal-check {{form.goal === item.value ? 'active' : ''}}"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 步骤2：训练条件 -->
+    <view wx:if="{{step === 2}}" class="step-content">
+      <view class="condition-card">
+        <view class="condition-title">训练地点</view>
+        <view class="condition-options">
+          <view wx:for="{{locationOptions}}" wx:key="value" 
+                class="condition-tag {{form.location === item.value ? 'active' : ''}}" 
+                data-field="location" data-value="{{item.value}}" bindtap="selectOption">
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="condition-card">
+        <view class="condition-title">器械条件</view>
+        <view class="condition-options">
+          <view wx:for="{{equipmentOptions}}" wx:key="value" 
+                class="condition-tag {{form.equipment === item.value ? 'active' : ''}}" 
+                data-field="equipment" data-value="{{item.value}}" bindtap="selectOption">
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="condition-card">
+        <view class="condition-title">每周训练天数</view>
+        <view class="condition-options">
+          <view wx:for="{{weeklyOptions}}" wx:key="*this" 
+                class="condition-tag {{form.weeklyDays === item ? 'active' : ''}}" 
+                data-field="weeklyDays" data-value="{{item}}" bindtap="selectOption">
+            {{item}}天
+          </view>
+        </view>
+      </view>
+
+      <view class="condition-card">
+        <view class="condition-title">单次训练时长</view>
+        <view class="condition-options">
+          <view wx:for="{{minuteOptions}}" wx:key="*this" 
+                class="condition-tag {{form.sessionMinutes === item ? 'active' : ''}}" 
+                data-field="sessionMinutes" data-value="{{item}}" bindtap="selectOption">
+            {{item}}分钟
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 步骤3：训练偏好 -->
+    <view wx:if="{{step === 3}}" class="step-content">
+      <view class="preference-list">
+        <view wx:for="{{preferenceOptions}}" wx:key="value" 
+              class="preference-card {{form.planStyle === item.value ? 'active' : ''}}" 
+              data-field="planStyle" data-value="{{item.value}}" bindtap="selectOption">
+          <view class="pref-icon">{{item.icon}}</view>
+          <view class="pref-info">
+            <view class="pref-name">{{item.label}}</view>
+            <view class="pref-desc">{{item.desc}}</view>
+          </view>
+          <view class="pref-check {{form.planStyle === item.value ? 'active' : ''}}">✓</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 步骤4：饮食习惯 -->
+    <view wx:if="{{step === 4}}" class="step-content">
+      <view class="condition-card">
+        <view class="condition-title">饮食模式</view>
+        <view class="condition-options">
+          <view wx:for="{{dietPatternOptions}}" wx:key="value" 
+                class="condition-tag {{form.dietPattern === item.value ? 'active' : ''}}" 
+                data-field="dietPattern" data-value="{{item.value}}" bindtap="selectOption">
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="condition-card">
+        <view class="condition-title">是否吃早餐</view>
+        <view class="condition-options">
+          <view wx:for="{{breakfastOptions}}" wx:key="value" 
+                class="condition-tag {{form.breakfastHabit === item.value ? 'active' : ''}}" 
+                data-field="breakfastHabit" data-value="{{item.value}}" bindtap="selectOption">
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="condition-card">
+        <view class="condition-title">平时怎么吃</view>
+        <view class="condition-options">
+          <view wx:for="{{dietModeOptions}}" wx:key="value" 
+                class="condition-tag {{form.dietMode === item.value ? 'active' : ''}}" 
+                data-field="dietMode" data-value="{{item.value}}" bindtap="selectOption">
+            {{item.label}}
+          </view>
+        </view>
+      </view>
+
+      <view class="condition-card">
+        <view class="condition-title">忌口食物</view>
+        <view class="condition-options">
+          <view wx:for="{{avoidOptions}}" wx:key="*this" 
+                class="condition-tag {{avoidMap[item] ? 'active' : ''}}" 
+                data-value="{{item}}" bindtap="toggleAvoid">
+            {{item}}
+          </view>
+        </view>
+        <input class="avoid-input" value="{{form.avoidFoods}}" data-field="avoidFoods" bindinput="onInput" placeholder="自定义忌口，用顿号分隔" />
+      </view>
+    </view>
+
+    <!-- 步骤5：推荐方案 -->
+    <view wx:if="{{step === 5}}" class="step-content">
+      <view class="recommend-card" wx:if="{{recommendation}}">
+        <view class="recommend-badge">推荐方案</view>
+        <view class="recommend-name">{{recommendation.name}}</view>
+        <view class="recommend-meta">
+          <text>每周 {{recommendation.weeklyDays}} 天</text>
+          <text>单次约 {{recommendation.sessionMinutes}} 分钟</text>
+        </view>
+        <view class="recommend-preview">
+          <view wx:for="{{recommendationPreview}}" wx:key="dayName" class="preview-item">
+            <text class="preview-day">{{item.dayName}}</text>
+            <text class="preview-title">{{item.title}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="nutrition-card" wx:if="{{nutritionSummary}}">
+        <view class="nutrition-title">推荐饮食目标</view>
+        <view class="nutrition-calories">
+          <text class="cal-num">{{nutritionSummary.calories}}</text>
+          <text class="cal-unit">kcal/天</text>
+        </view>
+        <view class="nutrition-macros">
+          <view class="macro-item">
+            <text class="macro-value">{{nutritionSummary.protein}}g</text>
+            <text class="macro-label">蛋白质</text>
+          </view>
+          <view class="macro-item">
+            <text class="macro-value">{{nutritionSummary.carbs}}g</text>
+            <text class="macro-label">碳水</text>
+          </view>
+          <view class="macro-item">
+            <text class="macro-value">{{nutritionSummary.fat}}g</text>
+            <text class="macro-label">脂肪</text>
+          </view>
+        </view>
+      </view>
+
+      <button class="primary-btn" bindtap="useRecommendation">使用推荐方案</button>
+      <button class="text-btn" bindtap="viewOtherPlans" wx:if="{{!showOtherPlans}}">查看其他方案</button>
+
+      <view class="other-plans" wx:if="{{showOtherPlans}}">
+        <view wx:for="{{otherPlans}}" wx:key="id" 
+              class="other-plan-item" 
+              data-style="{{item.planStyle}}" bindtap="choosePlan">
+          <view class="other-plan-name">{{item.name}}</view>
+          <view class="other-plan-desc">{{item.reason}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部按钮 -->
+    <view class="step-actions">
+      <button class="primary-btn" bindtap="next">{{step < 5 ? '下一步' : '完成'}}</button>
+      <button class="ghost-btn" wx:if="{{step === 0}}" bindtap="next">稍后完善</button>
+    </view>
+  </block>
+</view>
