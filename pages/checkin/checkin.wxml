@@ -1,0 +1,85 @@
+<view class="page safe-bottom">
+  <view class="app-header detail-header">
+    <button class="back-btn" bindtap="goBack">‹</button>
+    <view>
+      <view class="header-title">今日打卡</view>
+    </view>
+  </view>
+
+  <view class="streak-card panel">
+    <view class="streak-left">
+      <text>连续打卡</text>
+      <view>{{streak}}<text>天</text></view>
+    </view>
+    <view class="week-checks">
+      <view wx:for="{{weekDays}}" wx:key="label">
+        <text>{{item.label}}</text>
+        <view class="{{item.done ? 'done' : ''}}">{{item.done ? '✓' : ''}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="check-card section">
+    <view class="mono-icon">W</view>
+    <text>今日体重</text>
+    <input class="row-input" type="digit" value="{{form.weight}}" data-field="weight" bindinput="onInput" />
+    <text class="unit">kg</text>
+    <text class="chevron">›</text>
+  </view>
+
+  <view class="check-card section">
+    <view class="mono-icon">H</view>
+    <text>今日训练</text>
+    <view class="segmented">
+      <view class="{{form.workoutDone ? 'active' : ''}}" data-field="workoutDone" data-value="true" bindtap="setBoolean">已完成</view>
+      <view class="{{!form.workoutDone ? 'active muted' : ''}}" data-field="workoutDone" data-value="false" bindtap="setBoolean">未完成</view>
+    </view>
+  </view>
+
+  <view class="check-card section">
+    <view class="mono-icon">B</view>
+    <text>今日饮食</text>
+    <view class="segmented three">
+      <view class="{{form.dietStatus === '达标' ? 'active' : ''}}" data-value="达标" bindtap="setDietStatus">达标</view>
+      <view class="{{form.dietStatus === '一般' ? 'active muted' : ''}}" data-value="一般" bindtap="setDietStatus">一般</view>
+      <view class="{{form.dietStatus === '未达标' ? 'active muted' : ''}}" data-value="未达标" bindtap="setDietStatus">未达标</view>
+    </view>
+  </view>
+
+  <view class="slider-card section">
+    <view class="row">
+      <view class="mono-icon">D</view>
+      <text>饮水量</text>
+      <input class="water-input" type="number" value="{{form.water}}" data-field="water" bindinput="onInput" />
+      <text class="unit">ml</text>
+    </view>
+    <slider min="0" max="3000" step="100" value="{{form.water}}" activeColor="#111111" backgroundColor="#eeeeee" block-size="24" bindchange="onWaterChange" />
+    <view class="slider-scale"><text>0</text><text>1000</text><text>2000</text><text>3000</text></view>
+  </view>
+
+  <view class="check-card section">
+    <view class="mono-icon">M</view>
+    <text>睡眠时间</text>
+    <input class="row-input" type="digit" value="{{form.sleepHours}}" data-field="sleepHours" bindinput="onInput" />
+    <text class="unit">小时</text>
+    <text class="chevron">›</text>
+  </view>
+
+  <view class="check-card section">
+    <view class="mono-icon">S</view>
+    <text>今日状态</text>
+    <view class="segmented three">
+      <view class="{{form.mood === '精力充沛' ? 'active' : ''}}" data-value="精力充沛" bindtap="setMood">精力充沛</view>
+      <view class="{{form.mood === '一般' ? 'active muted' : ''}}" data-value="一般" bindtap="setMood">一般</view>
+      <view class="{{form.mood === '疲劳' ? 'active muted' : ''}}" data-value="疲劳" bindtap="setMood">疲劳</view>
+    </view>
+  </view>
+
+  <view class="note-card section">
+    <view class="mono-icon">N</view>
+    <text>备注</text>
+    <textarea value="{{form.note}}" data-field="note" bindinput="onInput" maxlength="200" placeholder="可记录今天的感受或补充信息..." />
+  </view>
+
+  <button class="primary-btn finish-btn" bindtap="submit">完成打卡</button>
+</view>
