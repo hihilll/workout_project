@@ -1,0 +1,273 @@
+<view class="page safe-bottom">
+  <!-- 顶部导航 -->
+  <view class="stats-header">
+    <view class="header-left">
+      <view class="header-title">数据复盘</view>
+      <view class="header-subtitle">{{periodText}}数据概览</view>
+    </view>
+    <view class="header-right">
+      <view class="header-icon" hover-class="pressed" bindtap="goCheckin">
+        <text>记</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 周期切换 -->
+  <view class="period-switch">
+    <view class="period-track">
+      <view class="period-indicator {{period}}"></view>
+      <view class="period-option {{period === 'week' ? 'active' : ''}}" data-period="week" bindtap="setPeriod">
+        <text>本周</text>
+      </view>
+      <view class="period-option {{period === 'month' ? 'active' : ''}}" data-period="month" bindtap="setPeriod">
+        <text>本月</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{!hasData}}" class="empty-state">
+    <view class="empty-icon">
+      <view class="empty-chart-icon">
+        <view class="chart-bar b1"></view>
+        <view class="chart-bar b2"></view>
+        <view class="chart-bar b3"></view>
+      </view>
+    </view>
+    <view class="empty-title">还没有复盘数据</view>
+    <view class="empty-desc">完成训练、保存饮食计划或每日打卡后，这里会显示真实趋势和建议</view>
+    <button class="primary-btn" bindtap="goCheckin">
+      <text>开始打卡</text>
+      <text class="btn-arrow">→</text>
+    </button>
+  </view>
+
+  <block wx:else>
+    <!-- 核心指标卡片 -->
+    <view class="metrics-card">
+      <view class="metrics-grid">
+        <view class="metric-item">
+          <view class="metric-icon workout">
+            <text>练</text>
+          </view>
+          <view class="metric-content">
+            <view class="metric-value">{{workoutRate}}<text class="metric-unit">%</text></view>
+            <view class="metric-label">训练完成率</view>
+          </view>
+        </view>
+        
+        <view class="metric-item">
+          <view class="metric-icon diet">
+            <text>食</text>
+          </view>
+          <view class="metric-content">
+            <view class="metric-value">{{dietRate}}<text class="metric-unit">%</text></view>
+            <view class="metric-label">饮食达标率</view>
+          </view>
+        </view>
+        
+        <view class="metric-item">
+          <view class="metric-icon streak">
+            <text>连</text>
+          </view>
+          <view class="metric-content">
+            <view class="metric-value">{{streak}}<text class="metric-unit">天</text></view>
+            <view class="metric-label">连续打卡</view>
+          </view>
+        </view>
+        
+        <view class="metric-item">
+          <view class="metric-icon weight">
+            <text>重</text>
+          </view>
+          <view class="metric-content">
+            <view class="metric-value">{{latestWeight}}<text class="metric-unit">kg</text></view>
+            <view class="metric-label">当前体重</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 体重变化卡片 -->
+    <view class="weight-card section">
+      <view class="card-header">
+        <view class="card-title-wrapper">
+          <view class="card-icon">重</view>
+          <view class="card-title">体重变化</view>
+        </view>
+        <view class="weight-badge {{weightChangeType}}">
+          <text>{{weightChangeText}}</text>
+        </view>
+      </view>
+      
+      <view class="weight-summary">
+        <view class="weight-start">
+          <view class="weight-label">起始</view>
+          <view class="weight-value">{{startWeight}}kg</view>
+        </view>
+        <view class="weight-arrow">
+          <view class="arrow-line"></view>
+          <view class="arrow-icon">→</view>
+        </view>
+        <view class="weight-end">
+          <view class="weight-label">当前</view>
+          <view class="weight-value">{{latestWeight}}kg</view>
+        </view>
+      </view>
+      
+      <view wx:if="{{weightPoints.length}}" class="weight-chart">
+        <view class="chart-area">
+          <view class="chart-line">
+            <view class="line-dot" wx:for="{{weightPoints}}" wx:key="date" style="bottom: {{item.percent}}%; left: {{item.position}}%;">
+              <view class="dot-tooltip">{{item.value}}kg</view>
+            </view>
+          </view>
+          <view class="chart-grid-lines">
+            <view class="grid-line"></view>
+            <view class="grid-line"></view>
+            <view class="grid-line"></view>
+          </view>
+        </view>
+        <view class="chart-labels">
+          <text wx:for="{{weightPoints}}" wx:key="date">{{item.label}}</text>
+        </view>
+      </view>
+      <view wx:else class="empty-chart">
+        <text>暂无体重记录</text>
+      </view>
+    </view>
+
+    <!-- 营养摄入卡片 -->
+    <view class="nutrition-card section">
+      <view class="card-header">
+        <view class="card-title-wrapper">
+          <view class="card-icon">养</view>
+          <view class="card-title">营养摄入</view>
+        </view>
+      </view>
+      
+      <view class="nutrition-grid">
+        <view class="nutrition-item">
+          <view class="nutrition-header">
+            <view class="nutrition-dot calories"></view>
+            <text class="nutrition-label">热量</text>
+          </view>
+          <view class="nutrition-chart">
+            <view class="nutrition-bar" style="height: {{caloriePercent}}%;"></view>
+          </view>
+          <view class="nutrition-info">
+            <view class="nutrition-value">{{avgCalories}}</view>
+            <view class="nutrition-target">/ {{targetCalories}} kcal</view>
+          </view>
+        </view>
+        
+        <view class="nutrition-item">
+          <view class="nutrition-header">
+            <view class="nutrition-dot protein"></view>
+            <text class="nutrition-label">蛋白质</text>
+          </view>
+          <view class="nutrition-chart">
+            <view class="nutrition-bar protein" style="height: {{proteinPercent}}%;"></view>
+          </view>
+          <view class="nutrition-info">
+            <view class="nutrition-value">{{avgProtein}}g</view>
+            <view class="nutrition-target">/ {{targetProtein}}g</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 复盘建议卡片 -->
+    <view class="advice-card section">
+      <view class="card-header">
+        <view class="card-title-wrapper">
+          <view class="card-icon">议</view>
+          <view class="card-title">复盘建议</view>
+        </view>
+      </view>
+      <view class="advice-content">
+        <view class="advice-icon">
+          <text>析</text>
+        </view>
+        <view class="advice-text">{{advice}}</view>
+      </view>
+    </view>
+
+    <!-- 执行汇总 -->
+    <view class="summary-card section">
+      <view class="card-header">
+        <view class="card-title-wrapper">
+          <view class="card-icon">汇</view>
+          <view class="card-title">执行汇总</view>
+        </view>
+      </view>
+      
+      <view class="summary-grid">
+        <view class="summary-item">
+          <view class="summary-icon">练</view>
+          <view class="summary-info">
+            <view class="summary-label">训练完成</view>
+            <view class="summary-value">{{workoutDoneCount}}/{{workoutExpectedCount}}次</view>
+          </view>
+        </view>
+        
+        <view class="summary-item">
+          <view class="summary-icon">食</view>
+          <view class="summary-info">
+            <view class="summary-label">饮食记录</view>
+            <view class="summary-value">{{mealDays}}天</view>
+          </view>
+        </view>
+        
+        <view class="summary-item">
+          <view class="summary-icon">卡</view>
+          <view class="summary-info">
+            <view class="summary-label">打卡天数</view>
+            <view class="summary-value">{{checkinDays}}天</view>
+          </view>
+        </view>
+        
+        <view class="summary-item">
+          <view class="summary-icon">连</view>
+          <view class="summary-info">
+            <view class="summary-label">连续打卡</view>
+            <view class="summary-value">{{streak}}天</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 最近训练 -->
+    <view class="recent-card section" wx:if="{{recentLogs.length}}">
+      <view class="card-header">
+        <view class="card-title-wrapper">
+          <view class="card-icon">近</view>
+          <view class="card-title">最近训练</view>
+        </view>
+        <view class="card-action">
+          <text>查看全部</text>
+          <text class="action-arrow">›</text>
+        </view>
+      </view>
+      
+      <view class="recent-list">
+        <view class="recent-item" wx:for="{{recentLogs}}" wx:key="id">
+          <view class="recent-left">
+            <view class="recent-icon">
+              <text>练</text>
+            </view>
+            <view class="recent-info">
+              <view class="recent-title">{{item.dayTitle}}</view>
+              <view class="recent-meta">{{item.date}} · {{item.completedSets}}/{{item.totalSets}} 组</view>
+            </view>
+          </view>
+          <view class="recent-right">
+            <view class="completion-badge {{item.completionRate >= 80 ? 'good' : item.completionRate >= 60 ? 'normal' : 'low'}}">
+              <text>{{item.completionRate}}%</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
