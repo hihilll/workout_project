@@ -1,0 +1,171 @@
+<view class="page safe-bottom" wx:if="{{day}}">
+  <view class="session-header">
+    <view class="header-left">
+      <button class="back-btn" bindtap="goBack">‹</button>
+      <view class="header-text">
+        <view class="header-title">开始训练</view>
+        <view class="header-subtitle">{{day.dayName}} · {{day.title}}</view>
+      </view>
+    </view>
+    <view class="header-timer">
+      <text class="timer-label">已用时</text>
+      <text class="timer-value">{{elapsedTime}}</text>
+    </view>
+  </view>
+
+  <!-- 训练进度头部 -->
+  <view class="session-hero">
+    <view class="hero-info">
+      <view class="hero-phase">{{current.phaseLabel}}</view>
+      <view class="hero-title">{{current.exerciseName}}</view>
+      <view class="hero-meta">
+        <view class="meta-item">
+          <text class="meta-num">{{currentIndex + 1}}</text>
+          <text class="meta-sep">/</text>
+          <text class="meta-total">{{sessionExercises.length}}</text>
+          <text class="meta-label">动作</text>
+        </view>
+        <view class="meta-divider"></view>
+        <view class="meta-item">
+          <text class="meta-num">{{completedSets}}</text>
+          <text class="meta-sep">/</text>
+          <text class="meta-total">{{totalSets}}</text>
+          <text class="meta-label">组</text>
+        </view>
+      </view>
+    </view>
+    <view class="progress-ring-container">
+      <view class="progress-ring">
+        <view class="ring-track"></view>
+        <view class="ring-progress" style="--progress: {{progress}}"></view>
+        <view class="ring-inner">
+          <text class="ring-percent">{{progress}}%</text>
+          <text class="ring-label">完成</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 阶段进度条 -->
+  <view class="phase-progress">
+    <view class="phase-bar warmup" style="width: {{warmupProgress}}%"></view>
+    <view class="phase-bar formal" style="width: {{formalProgress}}%"></view>
+    <view class="phase-bar stretch" style="width: {{stretchProgress}}%"></view>
+  </view>
+  <view class="phase-legend">
+    <view class="legend-item"><view class="legend-dot warmup"></view><text>热身</text></view>
+    <view class="legend-item"><view class="legend-dot formal"></view><text>正式</text></view>
+    <view class="legend-item"><view class="legend-dot stretch"></view><text>拉伸</text></view>
+  </view>
+
+  <!-- 当前动作详情 -->
+  <view class="exercise-detail panel section" wx:if="{{current}}">
+    <view class="detail-header">
+      <view class="phase-tag {{current.isWarmup ? 'warmup' : current.isStretch ? 'stretch' : 'formal'}}">
+        {{current.phaseLabel}}
+      </view>
+      <view class="exercise-count">{{current.sets}} 组 × {{current.reps}}</view>
+    </view>
+
+    <view class="instruction-box">
+      <view class="instruction-icon">要点</view>
+      <text class="instruction-text">{{current.instruction}}</text>
+    </view>
+
+    <!-- 组数完成卡片 -->
+    <view class="set-cards">
+      <view wx:for="{{setItems}}" wx:key="index" 
+            class="set-card {{item.done ? 'done' : ''}} {{item.justCompleted ? 'just-completed' : ''}}" 
+            data-index="{{index}}" 
+            bindtap="toggleSet">
+        <view class="set-number">第 {{index + 1}} 组</view>
+        <view class="set-reps">{{current.reps}}</view>
+        <view class="set-check" wx:if="{{item.done}}">✓</view>
+        <view class="set-empty" wx:else></view>
+      </view>
+    </view>
+
+    <!-- 休息倒计时 -->
+    <view class="rest-timer {{restLeft > 0 ? 'active' : ''}}" wx:if="{{restLeft > 0}}">
+      <view class="rest-label">组间休息</view>
+      <view class="rest-circle">
+        <view class="rest-ring">
+          <view class="rest-ring-fill" style="--rest-percent: {{restPercent}}%"></view>
+        </view>
+        <view class="rest-time">{{restLeft}}</view>
+        <view class="rest-unit">秒</view>
+      </view>
+      <button class="skip-rest" bindtap="skipRest">跳过休息</button>
+    </view>
+  </view>
+
+  <!-- 导航按钮 -->
+  <view class="session-nav">
+    <button class="nav-btn prev {{currentIndex === 0 ? 'disabled' : ''}}" bindtap="prevExercise">
+      <text class="nav-arrow">←</text>
+      <text>上一个</text>
+    </button>
+    <button class="nav-btn next" wx:if="{{currentIndex < sessionExercises.length - 1}}" bindtap="nextExercise">
+      <text>下一个</text>
+      <text class="nav-arrow">→</text>
+    </button>
+    <button class="nav-btn finish" wx:else bindtap="finishWorkout">
+      <text>完成训练</text>
+      <text class="nav-arrow">✓</text>
+    </button>
+  </view>
+
+  <!-- 动作列表 -->
+  <view class="exercise-list section">
+    <view class="list-header">
+      <view class="title-md">训练动作</view>
+      <view class="list-count">{{sessionExercises.length}} 个</view>
+    </view>
+    <view class="list-body">
+      <view class="exercise-row {{index === currentIndex ? 'active' : ''}} {{item.isWarmup ? 'warmup' : ''}} {{item.isStretch ? 'stretch' : ''}} {{item.completedSets >= item.sets ? 'completed' : ''}}" 
+            wx:for="{{sessionExercises}}" wx:key="id" data-index="{{index}}" bindtap="jumpExercise">
+        <view class="row-indicator">
+          <view class="indicator-dot {{item.completedSets >= item.sets ? 'done' : ''}}">
+            <text wx:if="{{item.completedSets >= item.sets}}">✓</text>
+            <text wx:elif="{{index === currentIndex}}">▶</text>
+            <text wx:else>{{index + 1}}</text>
+          </view>
+        </view>
+        <view class="row-info">
+          <view class="row-name">{{item.exerciseName}}</view>
+          <view class="row-meta">
+            <text class="row-phase {{item.isWarmup ? 'warmup' : item.isStretch ? 'stretch' : ''}}">{{item.phaseLabel}}</text>
+            <text class="row-sets">{{item.sets}} 组 × {{item.reps}}</text>
+          </view>
+        </view>
+        <view class="row-progress">
+          <text class="progress-text">{{item.completedSets}}/{{item.sets}}</text>
+          <view class="progress-mini-bar">
+            <view class="mini-fill" style="width: {{item.sets > 0 ? (item.completedSets / item.sets * 100) : 0}}%"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="page safe-bottom" wx:else>
+  <view class="app-header detail-header">
+    <button class="back-btn" bindtap="goBack">‹</button>
+    <view>
+      <view class="header-title">开始训练</view>
+      <view class="header-subtitle">请先选择一个训练日</view>
+    </view>
+  </view>
+
+  <view class="panel empty">
+    <view class="empty-illustration">
+      <view class="illust-circle"></view>
+      <view class="illust-line l1"></view>
+      <view class="illust-line l2"></view>
+    </view>
+    <view class="title-lg">没有找到训练内容</view>
+    <view class="muted empty-copy">请先回到训练计划页选择一个训练日。</view>
+    <button class="secondary-btn" bindtap="goBack">返回训练计划</button>
+  </view>
+</view>
