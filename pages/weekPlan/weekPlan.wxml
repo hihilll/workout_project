@@ -1,0 +1,109 @@
+<view class="page safe-bottom week-page">
+  <!-- 头部 -->
+  <view class="week-header">
+    <button class="back-btn" bindtap="goBack">‹</button>
+    <view class="header-title">本周训练计划</view>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <block wx:if="{{plan}}">
+    <!-- 概览卡片 -->
+    <view class="overview-card">
+      <view class="overview-top">
+        <view class="overview-info">
+          <view class="overview-num">{{trainingDays}}</view>
+          <view class="overview-label">天训练</view>
+        </view>
+        <view class="overview-divider"></view>
+        <view class="overview-info">
+          <view class="overview-num">{{restDays}}</view>
+          <view class="overview-label">天休息</view>
+        </view>
+        <view class="overview-divider"></view>
+        <view class="overview-info">
+          <view class="overview-num">{{exerciseCount}}</view>
+          <view class="overview-label">个动作</view>
+        </view>
+        <view class="overview-divider"></view>
+        <view class="overview-info">
+          <view class="overview-num">{{totalSets}}</view>
+          <view class="overview-label">总组数</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 警告提示 -->
+    <view class="warning-list" wx:if="{{plan.warnings.length}}">
+      <view class="warning-item" wx:for="{{plan.warnings}}" wx:key="*this">
+        <view class="warning-icon">!</view>
+        <text>{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 7天安排 -->
+    <view class="days-section">
+      <view class="section-title">7 天安排</view>
+      
+      <view class="day-list">
+        <view class="day-card {{item.isRestDay ? 'rest' : ''}} {{index === todayIndex ? 'today' : ''}}" 
+              wx:for="{{plan.days}}" wx:key="id" 
+              data-day="{{index}}" bindtap="openWorkout">
+          <!-- 左侧日期 -->
+          <view class="day-left">
+            <view class="day-name">{{item.dayName}}</view>
+            <view class="day-dot {{index === todayIndex ? 'active' : ''}}"></view>
+          </view>
+          
+          <!-- 中间内容 -->
+          <view class="day-content">
+            <view class="day-title-row">
+              <view class="day-icon {{item.isRestDay ? 'rest' : ''}}">
+                {{item.iconText}}
+              </view>
+              <view class="day-title">{{item.title}}</view>
+            </view>
+            <view class="day-meta" wx:if="{{!item.isRestDay}}">
+              <text>{{item.exercises.length}}个动作</text>
+              <text class="meta-dot">·</text>
+              <text>{{item.totalSets}}组</text>
+              <text class="meta-dot">·</text>
+              <text>{{sessionMinutes}}分钟</text>
+            </view>
+            <view class="day-meta rest-meta" wx:else>
+              <text>恢复日</text>
+            </view>
+          </view>
+          
+          <!-- 右侧操作 -->
+          <view class="day-right">
+            <button class="day-action-btn" wx:if="{{!item.isRestDay}}" catchtap="startWorkout" data-day="{{index}}">
+              开始
+            </button>
+            <view class="day-arrow">›</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作 -->
+    <view class="bottom-actions">
+      <button class="action-btn add" bindtap="addTrainingDay">
+        <text>+</text>
+        <text>添加训练日</text>
+      </button>
+      <button class="action-btn save" bindtap="savePlan">保存计划</button>
+    </view>
+  </block>
+
+  <!-- 空状态 -->
+  <view wx:else class="empty-state">
+    <view class="empty-icon">
+      <view class="ei-bar"></view>
+      <view class="ei-bar"></view>
+      <view class="ei-bar"></view>
+    </view>
+    <view class="empty-title">还没有训练计划</view>
+    <view class="empty-desc">请先回到训练页生成一份基础计划</view>
+    <button class="empty-btn" bindtap="goBack">返回训练页</button>
+  </view>
+</view>
