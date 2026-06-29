@@ -1,0 +1,134 @@
+<view class="page safe-bottom">
+  <view class="app-header detail-header">
+    <button class="back-btn" bindtap="goBack">‹</button>
+    <view>
+      <view class="header-title">饮食计划</view>
+      <view class="header-subtitle">{{dateLabel}}</view>
+    </view>
+  </view>
+
+  <view class="diet-toolbar">
+    <button class="pill" bindtap="openFoodLibrary">食物库</button>
+    <view class="pill">{{breakfastModeText}}⌄</view>
+    <view class="pill">{{dietModeText}}⌄</view>
+  </view>
+
+  <view wx:if="{{!plan}}" class="panel empty section">
+    <view class="title-lg">还没有饮食计划</view>
+    <view class="muted empty-copy">先填写信息，系统会计算热量目标并生成餐次。</view>
+    <button class="primary-btn" bindtap="goOnboarding">生成计划</button>
+  </view>
+
+  <block wx:else>
+    <view class="diet-tools section">
+      <button bindtap="applyModeTemplate">按模式重建</button>
+      <button bindtap="toggleBreakfast">{{breakfastActionText}}</button>
+      <button bindtap="copyYesterday">复制昨天</button>
+      <button bindtap="restoreRecommendation">恢复推荐</button>
+    </view>
+
+    <view class="target-card panel section">
+      <view class="between">
+        <view>
+          <view class="caption">今日营养目标</view>
+          <view><text class="target-number">{{plan.totals.calories}}</text><text class="unit">/ {{plan.targetCalories}} kcal</text></view>
+        </view>
+      </view>
+      <view class="macro-boxes">
+        <view>
+          <view class="macro-icon">P</view>
+          <text>蛋白质</text>
+          <view>{{plan.totals.protein}} / {{plan.targetProtein}}g</view>
+        </view>
+        <view>
+          <view class="macro-icon">C</view>
+          <text>碳水</text>
+          <view>{{plan.totals.carbs}} / {{plan.targetCarbs}}g</view>
+        </view>
+        <view>
+          <view class="macro-icon">F</view>
+          <text>脂肪</text>
+          <view>{{plan.totals.fat}} / {{plan.targetFat}}g</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="nutrition-alerts section">
+      <view class="nutrition-alert {{item.state}}" wx:for="{{nutritionSignals}}" wx:key="label">
+        <view class="alert-top">
+          <text>{{item.label}}</text>
+          <text>{{item.actual}}/{{item.target}}{{item.unit}}</text>
+        </view>
+        <view class="alert-track"><view class="alert-fill" style="width: {{item.percent}}%;"></view></view>
+        <view class="alert-message">{{item.message}}</view>
+      </view>
+    </view>
+
+    <view class="warning section" wx:for="{{plan.warnings}}" wx:key="*this">{{item}}</view>
+
+    <view class="saved-meals section" wx:if="{{hasSavedMeals}}">
+      <view class="section-head">
+        <view>
+          <view class="title-lg">常用餐</view>
+        </view>
+      </view>
+      <scroll-view scroll-x class="saved-scroll" show-scrollbar="{{false}}">
+        <view class="saved-row">
+          <view class="saved-card" wx:for="{{savedMeals}}" wx:key="id">
+            <view class="saved-title">{{item.name}}</view>
+            <view class="saved-meta">{{item.calories}} kcal</view>
+            <view class="saved-summary">{{item.summary}}</view>
+            <view class="saved-actions">
+              <button data-id="{{item.id}}" catchtap="applySavedMeal">加入</button>
+              <button data-id="{{item.id}}" catchtap="deleteSavedMeal">删除</button>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="meal-card section" wx:for="{{plan.meals}}" wx:for-index="mealIndex" wx:key="id">
+      <view class="meal-main">
+        <view class="meal-icon">{{item.icon}}</view>
+        <view class="meal-copy">
+          <view class="between">
+            <view>
+              <view class="meal-name">{{item.mealName}}</view>
+              <view class="caption">建议：{{item.suggest}}</view>
+            </view>
+            <view class="meal-kcal">{{item.totalCalories}} <text>kcal</text></view>
+          </view>
+          <view class="meal-macro-line">蛋白 {{item.totalProtein}}g · 碳水 {{item.totalCarbs}}g · 脂肪 {{item.totalFat}}g</view>
+        </view>
+      </view>
+
+      <view class="food-list">
+        <view class="food-row" wx:for="{{item.foods}}" wx:for-item="food" wx:for-index="foodIndex" wx:key="id">
+          <view class="food-info">
+            <view>{{food.foodName}}</view>
+            <text>{{food.typeLabel}} · {{food.calories}}kcal · P{{food.protein}} C{{food.carbs}} F{{food.fat}}</text>
+          </view>
+          <view class="amount-control">
+            <button data-meal="{{mealIndex}}" data-food="{{foodIndex}}" data-delta="-10" catchtap="stepAmount">−</button>
+            <input type="digit" value="{{food.amount}}" data-meal="{{mealIndex}}" data-food="{{foodIndex}}" bindblur="setAmount" />
+            <text>{{food.unit}}</text>
+            <button data-meal="{{mealIndex}}" data-food="{{foodIndex}}" data-delta="10" catchtap="stepAmount">＋</button>
+          </view>
+          <view class="food-actions">
+            <button data-meal="{{mealIndex}}" data-food="{{foodIndex}}" catchtap="replaceFood">替换</button>
+            <button class="delete" data-meal="{{mealIndex}}" data-food="{{foodIndex}}" catchtap="removeFood">删除</button>
+          </view>
+        </view>
+      </view>
+
+      <view class="meal-actions">
+        <button data-meal="{{mealIndex}}" bindtap="openFoodLibrary">添加食物</button>
+        <button data-meal="{{mealIndex}}" bindtap="saveMealAsTemplate">保存常用餐</button>
+        <button data-meal="{{mealIndex}}" bindtap="removeMeal">删除餐次</button>
+      </view>
+    </view>
+
+    <button class="secondary-btn add-meal-btn" bindtap="addMeal">添加餐次</button>
+    <button class="primary-btn save-btn" bindtap="savePlan">保存饮食计划</button>
+  </block>
+</view>
