@@ -1,0 +1,175 @@
+<view class="page safe-bottom">
+  <view class="app-header">
+    <view>
+      <view class="header-title">轻练计划</view>
+      <view class="header-date">{{todayDate}}</view>
+    </view>
+    <button class="avatar-btn" bindtap="goProfile">
+      <view class="mini-avatar">{{profileInitial}}</view>
+    </button>
+  </view>
+
+  <block wx:if="{{!hasProfile}}">
+    <view class="hero-empty panel">
+      <view class="empty-illustration">
+        <view class="illust-circle"></view>
+        <view class="illust-line l1"></view>
+        <view class="illust-line l2"></view>
+        <view class="illust-dot"></view>
+      </view>
+      <view class="title-lg">开启你的健身之旅</view>
+      <view class="muted empty-desc">填写基本信息，系统将为你量身定制训练和饮食计划</view>
+      <button class="primary-btn" bindtap="goOnboarding">生成我的计划</button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <!-- 今日概览：训练 + 饮食并列 -->
+    <view class="today-overview">
+      <view class="overview-card workout-card {{todayWorkout.isRestDay ? 'rest' : ''}}" hover-class="pressed" bindtap="{{todayWorkout.isRestDay ? 'goCheckin' : 'startTodayWorkout'}}">
+        <view class="card-badge">{{todayWorkout.isRestDay ? '休息日' : '训练日'}}</view>
+        <view class="card-icon-wrap">
+          <view class="card-icon workout-icon">
+            <view class="icon-bar"></view>
+            <view class="icon-bar"></view>
+            <view class="icon-bar"></view>
+          </view>
+        </view>
+        <view class="card-title">{{todayWorkout.title}}</view>
+        <view class="card-meta">
+          <text wx:if="{{!todayWorkout.isRestDay}}">◷ {{profile.sessionMinutes}}分钟</text>
+          <text wx:if="{{!todayWorkout.isRestDay}}">≈ {{estimateCalories}} kcal</text>
+          <text wx:else>让肌肉充分恢复</text>
+        </view>
+        <view class="card-action">
+          <text>{{todayWorkout.isRestDay ? '记录状态' : '开始训练'}}</text>
+          <text class="action-arrow">→</text>
+        </view>
+      </view>
+
+      <view class="overview-card diet-card" hover-class="pressed" bindtap="goMeal">
+        <view class="card-badge">饮食</view>
+        <view class="card-icon-wrap">
+          <view class="card-icon diet-icon">
+            <view class="icon-plate"></view>
+            <view class="icon-food"></view>
+          </view>
+        </view>
+        <view class="card-title">{{mealPlan.targetCalories}} kcal</view>
+        <view class="card-meta">
+          <text>P {{mealPlan.targetProtein}}g</text>
+          <text>C {{mealPlan.targetCarbs}}g</text>
+          <text>F {{mealPlan.targetFat}}g</text>
+        </view>
+        <view class="card-action">
+          <text>查看详情</text>
+          <text class="action-arrow">→</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 营养进度环 -->
+    <view class="nutrition-progress panel section">
+      <view class="progress-header">
+        <view class="title-md">今日营养</view>
+        <view class="progress-percent {{nutritionStatus}}">{{nutritionPercent}}%</view>
+      </view>
+      <view class="macro-progress-grid">
+        <view class="macro-item">
+          <view class="macro-ring" style="--percent: {{proteinPercent}}">
+            <view class="ring-fill"></view>
+            <view class="ring-center">{{proteinPercent}}%</view>
+          </view>
+          <text class="macro-label">蛋白质</text>
+          <text class="macro-value">{{mealPlan.targetProtein}}g</text>
+        </view>
+        <view class="macro-item">
+          <view class="macro-ring" style="--percent: {{carbsPercent}}">
+            <view class="ring-fill"></view>
+            <view class="ring-center">{{carbsPercent}}%</view>
+          </view>
+          <text class="macro-label">碳水</text>
+          <text class="macro-value">{{mealPlan.targetCarbs}}g</text>
+        </view>
+        <view class="macro-item">
+          <view class="macro-ring" style="--percent: {{fatPercent}}">
+            <view class="ring-fill"></view>
+            <view class="ring-center">{{fatPercent}}%</view>
+          </view>
+          <text class="macro-label">脂肪</text>
+          <text class="macro-value">{{mealPlan.targetFat}}g</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 连续打卡 + 本周数据 -->
+    <view class="streak-banner panel section" hover-class="pressed" bindtap="goCheckin">
+      <view class="streak-left">
+        <view class="streak-number">{{streak}}</view>
+        <text class="streak-unit">天连续打卡</text>
+      </view>
+      <view class="streak-week">
+        <view wx:for="{{weekCheckins}}" wx:key="day" class="week-dot {{item.done ? 'done' : ''}} {{item.isToday ? 'today' : ''}}">
+          <text>{{item.label}}</text>
+          <view class="dot-inner">{{item.done ? '✓' : ''}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 体重趋势卡片 -->
+    <view class="weight-trend panel section" hover-class="pressed" bindtap="goStats">
+      <view class="trend-header">
+        <view>
+          <view class="title-md">体重趋势</view>
+          <view class="trend-subtitle">近 7 天</view>
+        </view>
+        <view class="trend-change {{weightDirection}}">
+          <text>{{weightDirection === 'down' ? '↓' : weightDirection === 'up' ? '↑' : '→'}}</text>
+          <text>{{weightDiff}}kg</text>
+        </view>
+      </view>
+      <view class="trend-chart">
+        <view class="chart-y-axis">
+          <text>{{chartMax}}kg</text>
+          <text>{{chartMid}}kg</text>
+          <text>{{chartMin}}kg</text>
+        </view>
+        <view class="chart-bars">
+          <view wx:for="{{weightBars}}" wx:key="date" class="bar-col">
+            <view class="bar-value">{{item.value}}</view>
+            <view class="bar-track">
+              <view class="bar-fill" style="height: {{item.height}}%;"></view>
+            </view>
+            <text class="bar-label">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="trend-footer">
+        <view class="trend-start">{{startWeight}}kg</view>
+        <view class="trend-arrow">→</view>
+        <view class="trend-current">{{currentWeight}}kg</view>
+        <view class="trend-target">目标 {{profile.targetWeight}}kg</view>
+      </view>
+    </view>
+
+    <!-- 快捷操作 -->
+    <view class="quick-actions section">
+      <button class="action-btn" hover-class="pressed" bindtap="goCheckin">
+        <view class="action-icon">卡</view>
+        <text>每日打卡</text>
+      </button>
+      <button class="action-btn" hover-class="pressed" bindtap="goPlan">
+        <view class="action-icon">练</view>
+        <text>训练计划</text>
+      </button>
+      <button class="action-btn" hover-class="pressed" bindtap="goMeal">
+        <view class="action-icon">食</view>
+        <text>饮食计划</text>
+      </button>
+      <button class="action-btn" hover-class="pressed" bindtap="goStats">
+        <view class="action-icon">数</view>
+        <text>数据复盘</text>
+      </button>
+    </view>
+  </block>
+</view>
