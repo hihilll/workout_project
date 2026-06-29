@@ -1,0 +1,38 @@
+<view class="page safe-bottom food-library-page">
+  <view class="app-header detail-header">
+    <button class="back-btn" bindtap="goBack">‹</button>
+    <view>
+      <view class="header-title">{{titleText}}</view>
+    </view>
+  </view>
+
+  <view class="search-box">
+    <text>搜</text>
+    <input value="{{query}}" bindinput="onSearch" placeholder="搜索食物名称，例如鸡胸肉、米饭" />
+  </view>
+
+  <scroll-view scroll-x class="type-scroll" show-scrollbar="{{false}}">
+    <view class="type-row">
+      <view wx:for="{{typeFilters}}" wx:key="value" class="type-chip {{typeFilter === item.value ? 'active' : ''}}" data-type="{{item.value}}" bindtap="setType">{{item.label}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="library-list section">
+    <view class="food-card" wx:for="{{library}}" wx:key="id" data-id="{{item.id}}" bindtap="addFood">
+      <view class="food-icon">{{item.typeLabel}}</view>
+      <view class="food-main">
+        <view class="food-title-row">
+          <view class="food-title">{{item.name}}</view>
+          <button class="favorite-btn {{item.favorite ? 'active' : ''}}" data-id="{{item.id}}" catchtap="toggleFavorite">{{item.favorite ? '已常吃' : '常吃'}}</button>
+        </view>
+        <view class="food-meta">{{item.macroText}}</view>
+        <view class="food-tags">
+          <text>{{item.modeText}}</text>
+          <text wx:if="{{item.recent}}">最近添加</text>
+          <text>默认 {{item.defaultAmount}}{{item.unit}}</text>
+        </view>
+      </view>
+      <view class="food-action">{{mealIndex >= 0 ? '加入' : '查看'}}</view>
+    </view>
+  </view>
+</view>
