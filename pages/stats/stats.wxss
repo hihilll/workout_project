@@ -1,0 +1,724 @@
+/* 顶部导航 */
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20rpx 0;
+  margin-bottom: 24rpx;
+}
+
+.header-left {
+  flex: 1;
+}
+
+.header-title {
+  font-size: 48rpx;
+  font-weight: 900;
+  color: #111;
+  letter-spacing: -1rpx;
+}
+
+.header-subtitle {
+  margin-top: 8rpx;
+  font-size: 26rpx;
+  color: #777;
+}
+
+.header-right {
+  display: flex;
+  gap: 16rpx;
+}
+
+.header-icon {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: var(--volt-soft);
+  color: #3d4d0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: 800;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+/* 周期切换 */
+.period-switch {
+  margin-bottom: 24rpx;
+}
+
+.period-track {
+  position: relative;
+  display: flex;
+  background: #f5f5f5;
+  border-radius: 16rpx;
+  padding: 6rpx;
+}
+
+.period-indicator {
+  position: absolute;
+  top: 6rpx;
+  left: 6rpx;
+  width: calc(50% - 6rpx);
+  height: calc(100% - 12rpx);
+  background: #111;
+  border-radius: 12rpx;
+  transition: transform 0.3s ease;
+}
+
+.period-indicator.month {
+  transform: translateX(100%);
+}
+
+.period-option {
+  flex: 1;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.period-option text {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #777;
+  transition: color 0.3s;
+}
+
+.period-option.active text {
+  color: #fff;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100rpx 40rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  margin-bottom: 40rpx;
+}
+
+.empty-chart-icon {
+  width: 120rpx;
+  height: 120rpx;
+  background: #f5f5f5;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12rpx;
+  padding-bottom: 20rpx;
+}
+
+.chart-bar {
+  width: 20rpx;
+  border-radius: 6rpx 6rpx 0 0;
+  background: #ddd;
+}
+
+.chart-bar.b1 {
+  height: 40rpx;
+}
+
+.chart-bar.b2 {
+  height: 60rpx;
+}
+
+.chart-bar.b3 {
+  height: 30rpx;
+}
+
+.empty-title {
+  font-size: 36rpx;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 16rpx;
+}
+
+.empty-desc {
+  font-size: 28rpx;
+  color: #777;
+  line-height: 1.6;
+  margin-bottom: 48rpx;
+  max-width: 500rpx;
+}
+
+/* 核心指标卡片 */
+.metrics-card {
+  background: #111;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24rpx;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx;
+  background: rgba(255,255,255,0.08);
+  border-radius: 20rpx;
+}
+
+.metric-icon {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  flex-shrink: 0;
+}
+
+.metric-icon.workout,
+.metric-icon.diet,
+.metric-icon.streak,
+.metric-icon.weight {
+  background: var(--volt);
+  color: #111111;
+  font-weight: 800;
+}
+
+.metric-content {
+  flex: 1;
+}
+
+.metric-value {
+  font-size: 36rpx;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.metric-unit {
+  font-size: 20rpx;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  margin-left: 4rpx;
+}
+
+.metric-label {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.6);
+  margin-top: 8rpx;
+}
+
+/* 卡片通用样式 */
+.section {
+  margin-bottom: 24rpx;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.card-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.card-icon {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 12rpx;
+  background: var(--volt-soft);
+  color: #3d4d0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #111;
+}
+
+.card-action {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.card-action text {
+  font-size: 24rpx;
+  color: #777;
+}
+
+.action-arrow {
+  font-size: 28rpx;
+  color: #bbb;
+}
+
+/* 体重变化卡片 */
+.weight-card {
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  border: 2rpx solid #f0f0f0;
+}
+
+.weight-badge {
+  padding: 10rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.weight-badge.down {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.weight-badge.up {
+  background: #fbe9e7;
+  color: #c62828;
+}
+
+.weight-badge.flat {
+  background: #f5f5f5;
+  color: #777;
+}
+
+.weight-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32rpx;
+  padding: 24rpx;
+  background: #f8f8f8;
+  border-radius: 20rpx;
+}
+
+.weight-start,
+.weight-end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.weight-label {
+  font-size: 22rpx;
+  color: #777;
+}
+
+.weight-value {
+  font-size: 32rpx;
+  font-weight: 900;
+  color: #111;
+}
+
+.weight-arrow {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.arrow-line {
+  width: 60rpx;
+  height: 4rpx;
+  background: #ddd;
+  border-radius: 2rpx;
+}
+
+.arrow-icon {
+  font-size: 28rpx;
+  color: #777;
+}
+
+/* 体重图表 */
+.weight-chart {
+  margin-top: 24rpx;
+}
+
+.chart-area {
+  position: relative;
+  height: 200rpx;
+  background: #f8f8f8;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.chart-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.line-dot {
+  position: absolute;
+  width: 16rpx;
+  height: 16rpx;
+  background: #111;
+  border-radius: 50%;
+  transform: translate(-50%, 50%);
+  z-index: 2;
+}
+
+.dot-tooltip {
+  position: absolute;
+  bottom: 24rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  padding: 6rpx 12rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.line-dot:active .dot-tooltip {
+  opacity: 1;
+}
+
+.chart-grid-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20rpx 0;
+}
+
+.grid-line {
+  height: 2rpx;
+  background: #eee;
+}
+
+.chart-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16rpx;
+}
+
+.chart-labels text {
+  font-size: 20rpx;
+  color: #999;
+}
+
+.empty-chart {
+  height: 200rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f8f8;
+  border-radius: 16rpx;
+}
+
+.empty-chart text {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 营养摄入卡片 */
+.nutrition-card {
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  border: 2rpx solid #f0f0f0;
+}
+
+.nutrition-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24rpx;
+}
+
+.nutrition-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  padding: 24rpx;
+  background: #f8f8f8;
+  border-radius: 20rpx;
+}
+
+.nutrition-header {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.nutrition-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+}
+
+.nutrition-dot.calories {
+  background: var(--volt-deep);
+}
+
+.nutrition-dot.protein {
+  background: #111111;
+}
+
+.nutrition-label {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.nutrition-chart {
+  width: 80rpx;
+  height: 120rpx;
+  background: #eee;
+  border-radius: 12rpx;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.nutrition-bar {
+  width: 100%;
+  background: linear-gradient(to top, var(--volt-deep), var(--volt));
+  border-radius: 12rpx;
+  transition: height 0.6s ease;
+}
+
+.nutrition-bar.protein {
+  background: linear-gradient(to top, #111111, #444444);
+}
+
+.nutrition-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.nutrition-value {
+  font-size: 28rpx;
+  font-weight: 900;
+  color: #111;
+}
+
+.nutrition-target {
+  font-size: 20rpx;
+  color: #999;
+}
+
+/* 复盘建议卡片 */
+.advice-card {
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  border: 2rpx solid #f0f0f0;
+}
+
+.advice-content {
+  display: flex;
+  gap: 20rpx;
+  padding: 24rpx;
+  background: #f8f8f8;
+  border-radius: 20rpx;
+}
+
+.advice-icon {
+  width: 48rpx;
+  height: 48rpx;
+  background: var(--volt);
+  color: #111111;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.advice-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* 执行汇总卡片 */
+.summary-card {
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  border: 2rpx solid #f0f0f0;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx;
+  background: #f8f8f8;
+  border-radius: 16rpx;
+}
+
+.summary-icon {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 12rpx;
+  background: var(--volt-soft);
+  color: #3d4d0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  font-weight: 800;
+}
+
+.summary-info {
+  flex: 1;
+}
+
+.summary-label {
+  font-size: 22rpx;
+  color: #777;
+  margin-bottom: 6rpx;
+}
+
+.summary-value {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #111;
+}
+
+/* 最近训练卡片 */
+.recent-card {
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 32rpx;
+  border: 2rpx solid #f0f0f0;
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx;
+  background: #f8f8f8;
+  border-radius: 16rpx;
+}
+
+.recent-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.recent-icon {
+  width: 48rpx;
+  height: 48rpx;
+  background: var(--volt-soft);
+  color: #3d4d0a;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  font-weight: 800;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.recent-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.recent-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #111;
+}
+
+.recent-meta {
+  font-size: 22rpx;
+  color: #777;
+}
+
+.recent-right {
+  display: flex;
+  align-items: center;
+}
+
+.completion-badge {
+  padding: 10rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.completion-badge.good {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.completion-badge.normal {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.completion-badge.low {
+  background: #fbe9e7;
+  color: #c62828;
+}
+
+/* 响应式调整 */
+@media (max-width: 600rpx) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .nutrition-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
