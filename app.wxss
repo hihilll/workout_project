@@ -1,0 +1,300 @@
+page {
+  /* FitPlan design tokens */
+  --volt: #c6f432;
+  --volt-deep: #9ec916;
+  --volt-soft: #f0fad2;
+  --ink: #111111;
+  --ink-2: #555555;
+  --ink-3: #8a8a8a;
+  --bg: #f6f7f4;
+  --card: #ffffff;
+  --line: #ebede6;
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-size: 28rpx;
+}
+
+view,
+text,
+button,
+input,
+textarea,
+picker {
+  box-sizing: border-box;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  max-width: 100%;
+  border-radius: 18rpx;
+  font-size: 28rpx;
+  line-height: 1.2;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+button::after {
+  border: none;
+}
+
+/* 全局按压反馈：在可点击元素上配合 hover-class="pressed" 使用 */
+.pressed {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 88rpx 30rpx 40rpx;
+  overflow-x: hidden;
+}
+
+.safe-bottom {
+  padding-bottom: 40rpx;
+}
+
+.section {
+  margin-top: 24rpx;
+}
+
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20rpx;
+  margin-bottom: 28rpx;
+}
+
+.app-header > view:first-child,
+.detail-header > view:nth-child(2) {
+  min-width: 0;
+}
+
+.detail-header {
+  display: grid;
+  grid-template-columns: 64rpx minmax(0, 1fr);
+  align-items: center;
+  gap: 16rpx;
+}
+
+.back-btn {
+  width: 64rpx;
+  height: 64rpx;
+  min-height: 64rpx;
+  min-width: 64rpx;
+  padding: 0;
+  border-radius: 50%;
+  border: 1rpx solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 36rpx;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(17, 17, 17, 0.06);
+  flex-shrink: 0;
+}
+
+.header-title {
+  font-size: 48rpx;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.header-subtitle {
+  margin-top: 12rpx;
+  color: var(--ink-3);
+  font-size: 26rpx;
+  line-height: 1.4;
+}
+
+.panel {
+  background: var(--card);
+  border: 1rpx solid var(--line);
+  border-radius: 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 12rpx 30rpx rgba(17, 17, 17, 0.04);
+  overflow: hidden;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.title-xl {
+  font-size: 52rpx;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.title-lg {
+  font-size: 32rpx;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.title-md {
+  font-size: 28rpx;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+/* 数字展示：用于连续天数、热量、体重等核心指标 */
+.num-xl {
+  font-size: 64rpx;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -1rpx;
+  font-variant-numeric: tabular-nums;
+}
+
+.num-lg {
+  font-size: 44rpx;
+  line-height: 1.05;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.muted {
+  color: var(--ink-3);
+}
+
+.caption {
+  color: var(--ink-3);
+  font-size: 24rpx;
+  line-height: 1.4;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  min-width: 0;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16rpx;
+}
+
+.primary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 86rpx;
+  padding: 0 24rpx;
+  background: var(--volt);
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.2;
+  box-shadow: 0 10rpx 24rpx rgba(158, 201, 22, 0.35);
+}
+
+.secondary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 76rpx;
+  padding: 0 20rpx;
+  background: var(--card);
+  color: var(--ink);
+  border: 1.5rpx solid var(--ink);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.ghost-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72rpx;
+  padding: 0 20rpx;
+  background: var(--card);
+  color: #303030;
+  border: 1rpx solid #dedede;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44rpx;
+  padding: 0 18rpx;
+  border-radius: 999rpx;
+  background: #f4f4f4;
+  color: #333333;
+  font-size: 22rpx;
+  font-weight: 600;
+  border: 1rpx solid #e4e4e4;
+}
+
+.tag.volt {
+  background: var(--volt-soft);
+  color: #3d4d0a;
+  border-color: #dcedb0;
+}
+
+.warning {
+  background: var(--card);
+  color: #444444;
+  border: 1rpx solid #e8e8e8;
+  border-radius: 18rpx;
+  padding: 20rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.danger {
+  background: #fff7f7;
+  color: #7a2b2b;
+  border: 1rpx solid #f0d6d6;
+  border-radius: 18rpx;
+  padding: 20rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+}
+
+.input {
+  width: 100%;
+  min-height: 72rpx;
+  padding: 0 16rpx;
+  border-radius: 12rpx;
+  border: none;
+  background: #f5f5f5;
+}
+
+.mono-icon {
+  width: 52rpx;
+  height: 52rpx;
+  border: 3rpx solid #444444;
+  border-radius: 14rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  font-size: 26rpx;
+  font-weight: 800;
+}
+
+.chevron {
+  color: var(--ink-3);
+  font-size: 32rpx;
+}
