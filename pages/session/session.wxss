@@ -1,0 +1,755 @@
+/* 头部区域 */
+.session-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex: 1;
+  min-width: 0;
+}
+
+.header-left .back-btn {
+  flex-shrink: 0;
+  width: 64rpx;
+  height: 64rpx;
+  min-height: 64rpx;
+  border-radius: 50%;
+}
+
+.header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.header-text .header-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.header-text .header-subtitle {
+  margin-top: 4rpx;
+  font-size: 24rpx;
+  color: #888888;
+}
+
+/* 头部计时器 */
+.header-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  padding-right: 4rpx;
+}
+
+.timer-label {
+  font-size: 20rpx;
+  color: #888888;
+}
+
+.timer-value {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #111111;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 训练进度头部 */
+.session-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  padding: 8rpx 0 24rpx;
+}
+
+.hero-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.hero-phase {
+  display: inline-flex;
+  align-items: center;
+  height: 32rpx;
+  padding: 0 12rpx;
+  border-radius: 999rpx;
+  background: #f0f0f0;
+  color: #666666;
+  font-size: 20rpx;
+  font-weight: 600;
+  margin-bottom: 10rpx;
+}
+
+.hero-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 12rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.meta-item {
+  display: flex;
+  align-items: baseline;
+  gap: 4rpx;
+}
+
+.meta-num {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #111111;
+}
+
+.meta-sep {
+  color: #cccccc;
+  font-size: 18rpx;
+}
+
+.meta-total {
+  font-size: 20rpx;
+  color: #888888;
+}
+
+.meta-label {
+  font-size: 18rpx;
+  color: #aaaaaa;
+  margin-left: 2rpx;
+}
+
+.meta-divider {
+  width: 1rpx;
+  height: 20rpx;
+  background: #e0e0e0;
+}
+
+/* 进度环 */
+.progress-ring-container {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+}
+
+.progress-ring {
+  position: relative;
+  width: 110rpx;
+  height: 110rpx;
+}
+
+.ring-track {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6rpx solid #f0f0f0;
+}
+
+/* 真实进度环：conic-gradient 按 --progress 绘制 */
+.ring-progress {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(var(--volt-deep) 0, var(--volt) calc(var(--progress) * 1%), #f0f0f0 calc(var(--progress) * 1%), #f0f0f0 100%);
+  transition: all 0.3s ease;
+}
+
+.ring-inner {
+  position: absolute;
+  top: 8rpx;
+  left: 8rpx;
+  right: 8rpx;
+  bottom: 8rpx;
+  border-radius: 50%;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-percent {
+  font-size: 26rpx;
+  font-weight: 800;
+  color: #111111;
+  line-height: 1;
+}
+
+.ring-label {
+  font-size: 16rpx;
+  color: #888888;
+  margin-top: 2rpx;
+}
+
+/* 阶段进度条 */
+.phase-progress {
+  height: 8rpx;
+  display: flex;
+  border-radius: 999rpx;
+  overflow: hidden;
+  background: #f0f0f0;
+  width: 100%;
+}
+
+.phase-bar {
+  height: 100%;
+  transition: width 0.3s ease;
+  min-width: 0;
+}
+
+.phase-bar.warmup {
+  background: #f59e0b;
+}
+
+.phase-bar.formal {
+  background: var(--volt-deep);
+}
+
+.phase-bar.stretch {
+  background: #8b5cf6;
+}
+
+.phase-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20rpx;
+  margin-top: 12rpx;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.legend-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+}
+
+.legend-dot.warmup {
+  background: #f59e0b;
+}
+
+.legend-dot.formal {
+  background: var(--volt-deep);
+}
+
+.legend-dot.stretch {
+  background: #8b5cf6;
+}
+
+.legend-item text {
+  font-size: 20rpx;
+  color: #888888;
+}
+
+/* 动作详情卡片 */
+.exercise-detail {
+  padding: 24rpx;
+  overflow: hidden;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.phase-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 36rpx;
+  padding: 0 14rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.phase-tag.warmup {
+  background: #fff7ed;
+  color: #d97706;
+}
+
+.phase-tag.formal {
+  background: #f5f5f5;
+  color: #111111;
+}
+
+.phase-tag.stretch {
+  background: #f5f3ff;
+  color: #7c3aed;
+}
+
+.exercise-count {
+  font-size: 24rpx;
+  color: #888888;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* 动作说明 */
+.instruction-box {
+  display: flex;
+  gap: 10rpx;
+  padding: 16rpx;
+  border-radius: 14rpx;
+  background: #fafafa;
+  margin-bottom: 20rpx;
+}
+
+.instruction-icon {
+  flex-shrink: 0;
+  align-self: flex-start;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  background: var(--volt-soft);
+  color: #3d4d0a;
+  font-size: 20rpx;
+  font-weight: 700;
+}
+
+.instruction-text {
+  font-size: 24rpx;
+  color: #555555;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+/* 组数卡片 */
+.set-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12rpx;
+}
+
+.set-card {
+  position: relative;
+  padding: 16rpx;
+  border-radius: 14rpx;
+  border: 2rpx solid #eeeeee;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.set-card:active {
+  transform: scale(0.98);
+}
+
+.set-card.done {
+  border-color: var(--volt-deep);
+  background: var(--volt);
+}
+
+.set-card.just-completed {
+  animation: setComplete 0.3s ease;
+}
+
+@keyframes setComplete {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.set-number {
+  font-size: 22rpx;
+  color: #888888;
+  flex-shrink: 0;
+}
+
+.set-card.done .set-number {
+  color: rgba(17, 17, 17, 0.6);
+}
+
+.set-reps {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #111111;
+  flex-shrink: 0;
+}
+
+.set-card.done .set-reps {
+  color: #111111;
+}
+
+.set-check {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  background: #111111;
+  color: var(--volt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18rpx;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.set-empty {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  border: 2rpx solid #dddddd;
+  flex-shrink: 0;
+}
+
+/* 休息倒计时 */
+.rest-timer {
+  margin-top: 24rpx;
+  padding: 20rpx;
+  border-radius: 18rpx;
+  background: #fafafa;
+  text-align: center;
+  display: none;
+  overflow: hidden;
+}
+
+.rest-timer.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rest-label {
+  font-size: 24rpx;
+  color: #888888;
+  margin-bottom: 16rpx;
+}
+
+.rest-circle {
+  position: relative;
+  width: 120rpx;
+  height: 120rpx;
+  margin: 0 auto;
+}
+
+.rest-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* 休息倒计时环：conic-gradient 按 --rest-percent 收缩 */
+.rest-ring-fill {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(var(--volt) var(--rest-percent), #e8ebe0 var(--rest-percent), #e8ebe0 100%);
+  transition: all 1s linear;
+}
+
+.rest-time {
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  right: 10rpx;
+  bottom: 10rpx;
+  border-radius: 50%;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  font-weight: 900;
+  color: #111111;
+  font-variant-numeric: tabular-nums;
+}
+
+.rest-unit {
+  position: absolute;
+  bottom: 20rpx;
+  width: 100%;
+  text-align: center;
+  font-size: 20rpx;
+  color: #888888;
+}
+
+.skip-rest {
+  margin-top: 12rpx;
+  height: 52rpx;
+  padding: 0 20rpx;
+  border-radius: 999rpx;
+  background: #ffffff;
+  border: 1rpx solid #dddddd;
+  color: #666666;
+  font-size: 24rpx;
+}
+
+/* 导航按钮 */
+.session-nav {
+  display: flex;
+  gap: 14rpx;
+  margin-top: 24rpx;
+}
+
+.nav-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  height: 88rpx;
+  min-width: 0;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.nav-btn.prev {
+  background: #ffffff;
+  border: 1rpx solid #eeeeee;
+  color: #666666;
+  flex: 0 0 auto;
+  width: 180rpx;
+}
+
+.nav-btn.prev.disabled {
+  opacity: 0.5;
+}
+
+.nav-btn.next {
+  background: #111111;
+  color: #ffffff;
+}
+
+.nav-btn.finish {
+  background: var(--volt);
+  color: #111111;
+  font-weight: 700;
+  box-shadow: 0 10rpx 24rpx rgba(158, 201, 22, 0.35);
+}
+
+.nav-arrow {
+  font-size: 24rpx;
+  flex-shrink: 0;
+}
+
+/* 动作列表 */
+.exercise-list {
+  background: #ffffff;
+  border: 1rpx solid #eeeeee;
+  border-radius: 20rpx;
+  overflow: hidden;
+  width: 100%;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.list-count {
+  font-size: 22rpx;
+  color: #888888;
+  padding: 6rpx 12rpx;
+  background: #f5f5f5;
+  border-radius: 999rpx;
+  flex-shrink: 0;
+}
+
+.list-body {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.exercise-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 16rpx 20rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+  transition: background 0.2s ease;
+  min-width: 0;
+}
+
+.exercise-row:last-child {
+  border-bottom: none;
+}
+
+.exercise-row.active {
+  background: var(--volt-soft);
+}
+
+.exercise-row.completed {
+  opacity: 0.7;
+}
+
+.row-indicator {
+  flex: 0 0 44rpx;
+}
+
+.indicator-dot {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  border: 2rpx solid #dddddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18rpx;
+  color: #888888;
+}
+
+.indicator-dot.done {
+  background: var(--volt);
+  border-color: var(--volt-deep);
+  color: #111111;
+}
+
+.exercise-row.active .indicator-dot {
+  border-color: #111111;
+  color: #111111;
+}
+
+.row-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.row-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #111111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row-meta {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-top: 4rpx;
+  flex-wrap: wrap;
+}
+
+.row-phase {
+  font-size: 20rpx;
+  color: #888888;
+  flex-shrink: 0;
+}
+
+.row-phase.warmup {
+  color: #d97706;
+}
+
+.row-phase.stretch {
+  color: #7c3aed;
+}
+
+.row-sets {
+  font-size: 20rpx;
+  color: #aaaaaa;
+  flex-shrink: 0;
+}
+
+.row-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6rpx;
+  flex-shrink: 0;
+  min-width: 60rpx;
+}
+
+.progress-text {
+  font-size: 20rpx;
+  font-weight: 600;
+  color: #111111;
+  white-space: nowrap;
+}
+
+.progress-mini-bar {
+  width: 50rpx;
+  height: 4rpx;
+  border-radius: 999rpx;
+  background: #f0f0f0;
+  overflow: hidden;
+}
+
+.mini-fill {
+  height: 100%;
+  border-radius: 999rpx;
+  background: var(--volt-deep);
+  transition: width 0.3s ease;
+}
+
+/* 空状态 */
+.empty-illustration {
+  position: relative;
+  width: 160rpx;
+  height: 160rpx;
+  margin: 0 auto 32rpx;
+}
+
+.illust-circle {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 6rpx solid #e0e0e0;
+  position: absolute;
+  top: 20rpx;
+  left: 20rpx;
+}
+
+.illust-line {
+  position: absolute;
+  background: #d0d0d0;
+  border-radius: 4rpx;
+}
+
+.illust-line.l1 {
+  width: 60rpx;
+  height: 8rpx;
+  top: 60rpx;
+  left: 50rpx;
+  transform: rotate(-20deg);
+}
+
+.illust-line.l2 {
+  width: 50rpx;
+  height: 8rpx;
+  top: 90rpx;
+  left: 60rpx;
+  transform: rotate(15deg);
+}
+
+.empty-copy {
+  margin: 16rpx 0 32rpx;
+}
