@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/onboarding/onboarding",
+    "pages/plan/plan",
+    "pages/weekPlan/weekPlan",
+    "pages/workout/workout",
+    "pages/exerciseLibrary/exerciseLibrary",
+    "pages/session/session",
+    "pages/meal/meal",
+    "pages/mealDetail/mealDetail",
+    "pages/foodLibrary/foodLibrary",
+    "pages/checkin/checkin",
+    "pages/stats/stats",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "navigationBarTitleText": "FitPlan",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom",
+    "backgroundColor": "#f6f7f4"
+  },
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "#111111",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/plan/plan",
+        "text": "训练"
+      },
+      {
+        "pagePath": "pages/meal/meal",
+        "text": "饮食"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "数据"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
