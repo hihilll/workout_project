@@ -1,0 +1,203 @@
+.onboarding-page {
+  padding-bottom: 56rpx;
+}
+
+.progress-wrap {
+  margin-bottom: 28rpx;
+}
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+  color: #777777;
+  font-size: 24rpx;
+}
+
+.step-panel {
+  min-height: 0;
+}
+
+.question-title {
+  margin: 14rpx 0 24rpx;
+  font-size: 40rpx;
+  font-weight: 900;
+  line-height: 1.18;
+}
+
+.form-card {
+  padding: 26rpx 28rpx 16rpx;
+  border-radius: 22rpx;
+  background: #ffffff;
+  border: 1rpx solid #eeeeee;
+  box-shadow: 0 14rpx 34rpx rgba(0, 0, 0, 0.055);
+}
+
+.form-row {
+  min-height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx solid #ededed;
+  gap: 18rpx;
+}
+
+.form-row:last-child {
+  border-bottom: none;
+}
+
+.form-row > text {
+  color: #111111;
+  font-size: 28rpx;
+}
+
+.plain-input {
+  flex: 1;
+  min-height: 72rpx;
+  text-align: right;
+  color: #111111;
+}
+
+.segmented {
+  display: flex;
+  gap: 14rpx;
+}
+
+.segmented.small view {
+  min-width: 96rpx;
+}
+
+.segmented view,
+.option {
+  min-height: 58rpx;
+  padding: 0 22rpx;
+  border-radius: 999rpx;
+  border: 1rpx solid #d9d9d9;
+  color: #111111;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 650;
+}
+
+.segmented view.active,
+.option.active {
+  background: #111111;
+  color: #ffffff;
+  border-color: #111111;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+}
+
+.option-grid.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+}
+
+.choice-card {
+  min-height: 128rpx;
+  padding: 26rpx 28rpx;
+  border-radius: 22rpx;
+  background: #ffffff;
+  border: 1rpx solid #eeeeee;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.choice-card.active {
+  border: 3rpx solid #111111;
+}
+
+.choice-title {
+  font-size: 32rpx;
+  font-weight: 850;
+}
+
+.choice-card text {
+  display: block;
+  margin-top: 8rpx;
+  color: #777777;
+  font-size: 24rpx;
+  line-height: 1.45;
+}
+
+.choice-dot {
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  border: 3rpx solid #bbbbbb;
+}
+
+.choice-card.active .choice-dot {
+  border: 10rpx solid #111111;
+}
+
+.field-title {
+  margin: 28rpx 0 16rpx;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+.custom-avoid {
+  width: 100%;
+  min-height: 76rpx;
+  margin-top: 20rpx;
+  padding: 0 22rpx;
+  border-radius: 16rpx;
+  background: #f4f4f4;
+}
+
+.recommend-card {
+  padding: 30rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+  border: 1rpx solid #eeeeee;
+  box-shadow: 0 14rpx 34rpx rgba(0, 0, 0, 0.055);
+}
+
+.recommend-name {
+  margin-top: 20rpx;
+  font-size: 46rpx;
+  font-weight: 900;
+  line-height: 1.14;
+}
+
+.recommend-line {
+  margin-top: 18rpx;
+  color: #333333;
+  font-size: 28rpx;
+}
+
+.other-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.nav-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14rpx;
+  margin-top: 30rpx;
+  position: sticky;
+  bottom: 20rpx;
+  padding-top: 18rpx;
+  background: linear-gradient(rgba(255, 255, 255, 0), #ffffff 22rpx);
+}
+
+.nav-actions button:only-child {
+  grid-column: 1 / 3;
+}
