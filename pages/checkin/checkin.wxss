@@ -1,0 +1,167 @@
+.streak-card {
+  display: grid;
+  grid-template-columns: 150rpx 1fr;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.streak-left text {
+  color: #111111;
+  font-size: 26rpx;
+}
+
+.streak-left view {
+  margin-top: 8rpx;
+  font-size: 62rpx;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.streak-left view text {
+  margin-left: 8rpx;
+  font-size: 28rpx;
+}
+
+.week-checks {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8rpx;
+}
+
+.week-checks > view {
+  text-align: center;
+}
+
+.week-checks text {
+  color: #666666;
+  font-size: 22rpx;
+}
+
+.week-checks view view {
+  width: 44rpx;
+  height: 44rpx;
+  margin: 16rpx auto 0;
+  border-radius: 50%;
+  border: 3rpx solid #999999;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  font-weight: 900;
+}
+
+.week-checks view view.done {
+  background: #111111;
+  border-color: #111111;
+}
+
+.check-card,
+.slider-card,
+.note-card {
+  min-height: 94rpx;
+  padding: 22rpx 24rpx;
+  border-radius: 20rpx;
+  background: #ffffff;
+  border: 1rpx solid #eeeeee;
+  box-shadow: 0 12rpx 30rpx rgba(0, 0, 0, 0.05);
+}
+
+.check-card {
+  display: grid;
+  grid-template-columns: 58rpx 1fr auto auto auto;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.check-card > text:nth-child(2),
+.slider-card .row > text:nth-child(2),
+.note-card > text {
+  font-size: 30rpx;
+  font-weight: 760;
+}
+
+.row-input,
+.water-input {
+  width: 130rpx;
+  text-align: right;
+  font-size: 32rpx;
+  font-weight: 850;
+}
+
+.unit {
+  color: #777777;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 236rpx;
+  height: 64rpx;
+  border: 1rpx solid #e1e1e1;
+  border-radius: 14rpx;
+  overflow: hidden;
+}
+
+.segmented.three {
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 330rpx;
+}
+
+.segmented view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777777;
+  border-right: 1rpx solid #e1e1e1;
+}
+
+.segmented view:last-child {
+  border-right: none;
+}
+
+.segmented view.active {
+  color: #111111;
+  border: 2rpx solid #111111;
+  border-radius: 12rpx;
+  background: #ffffff;
+  font-weight: 760;
+}
+
+.slider-card .row {
+  display: grid;
+  grid-template-columns: 66rpx 1fr 130rpx auto;
+  gap: 16rpx;
+  align-items: center;
+}
+
+.slider-card slider {
+  margin: 24rpx 0 0;
+}
+
+.slider-scale {
+  display: flex;
+  justify-content: space-between;
+  color: #777777;
+  font-size: 22rpx;
+  padding: 0 18rpx;
+}
+
+.note-card {
+  display: grid;
+  grid-template-columns: 58rpx 1fr;
+  gap: 16rpx;
+}
+
+.note-card textarea {
+  grid-column: 1 / -1;
+  min-height: 112rpx;
+  padding: 22rpx;
+  border-radius: 14rpx;
+  background: #f5f5f5;
+  color: #111111;
+}
+
+.finish-btn {
+  margin-top: 26rpx;
+}
